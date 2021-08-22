@@ -1,0 +1,24 @@
+
+.product-image{
+    background-color: lightgray ;
+
+}
+.footer{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.card-button{
+    box-shadow: 0 10px 10px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19);
+    
+}
+.card-btn:active{
+    box-shadow: 5px 5px 15px #666;
+    transform: translateY(2px);
+      
+}
+.product-container{
+    margin: 0 auto;
+    padding: 30px;
+    
+}
