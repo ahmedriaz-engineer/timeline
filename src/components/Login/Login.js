@@ -60,8 +60,8 @@ const Login = () => {
                 });
         }
         return (
-            <div className='login-container App'>
-                <Button onClick={handleGoogleSignIn} className='card-button sign-in w-25' variant="info"><FontAwesomeIcon className="mr-5" icon={['fab', 'google']} /> Sign in with Google</Button>
+            <div className='login-container App '>
+                <Button onClick={handleGoogleSignIn} className='card-button sign-in w-25 mt-5' variant="info"><FontAwesomeIcon className="mr-5" icon={['fab', 'google']} /> Sign in with Google</Button>
                 <br /><br />
                 <Button onClick={handleFacebookSignIn} className='card-button sign-in w-25' variant="info"><FontAwesomeIcon className="mr-5" icon={['fab', 'facebook']} /> Sign in with Facebook</Button>
                 <h3>Signed in user: {loggedInUser.name}</h3>

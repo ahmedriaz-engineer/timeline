@@ -51,15 +51,40 @@ const Admin = () => {
                 console.log(error);
             });
     }
-    const editHandler = () => {
-        console.log("edit clicked")
+    function updateHandler() {
+        console.log('updating')
     }
-    const deleteHandler = () => {
-        console.log("delete clicked")
+    const editHandler = (id) => {
+        console.log("edit", id)
+        fetch(`http://localhost:5000/product/${id}`)
+            .then(response => response.json())
+            .then(data => {
+                console.log(data);
+                const update = document.getElementById('update');
+                update.innerHTML = `
+            <h3>Update: ${data._id}</h3>
+            <input class='addInput' placeholder='Enter Name' type= 'text' value='${data.name}'/>
+            <input class='addInput' placeholder='Enter Price' type= 'number' value='${data.price}'/>
+            <button onclick="updateHandler()" class='card-button btn btn-info'> Update </button><br /><br />
+            `
+            })
+    }
+
+
+    const deleteHandler = (id) => {
+
+        fetch(`http://localhost:5000/delete/${id}`, {
+            method: 'DELETE'
+        })
+            .then(response => response.json())
+            .then(result => {
+                console.log('deleted successfully')
+            })
     }
     return (
 
         <div className=' admin-container mt-5' >
+
             <Tab.Container id="left-tabs-example" defaultActiveKey="first">
                 <Row >
                     <Col sm={3} >
@@ -81,8 +106,12 @@ const Admin = () => {
                     <Col sm={9}>
                         <Tab.Content className='App'>
                             <Tab.Pane eventKey="first">
-                                <Table striped bordered hover variant="dark">
+                                <div id='update' className='bg-light p-3 m-2'>
+
+                                </div>
+                                <Table striped bordered hover variant="dark" >
                                     <thead>
+
                                         <tr>
                                             <th>#</th>
                                             <th>Watch Name</th>
@@ -108,17 +137,17 @@ const Admin = () => {
                                                                     </Dropdown.Toggle>
 
                                                                     <Dropdown.Menu>
-                                                                        <Dropdown.Item onClick={editHandler}><FontAwesomeIcon icon={faEdit} /> Edit</Dropdown.Item>
-                                                                        <Dropdown.Item onClick={deleteHandler}><FontAwesomeIcon icon={faTrashAlt} /> Delete</Dropdown.Item>
+                                                                        <Dropdown.Item onClick={() => editHandler(`${product._id}`)}><FontAwesomeIcon icon={faEdit} /> Edit</Dropdown.Item>
+                                                                        <Dropdown.Item onClick={() => deleteHandler(`${product._id}`)}><FontAwesomeIcon icon={faTrashAlt} /> Delete</Dropdown.Item>
                                                                     </Dropdown.Menu>
                                                                 </Dropdown>
                                                             </td>
                                                         </tr>
-                                                        
-                                                            <td>1</td>
+
+                                                        {/* <td>1</td>
                                                             <td><input type= 'text' defaultValue={product.name}/></td>
                                                             <td><input type= 'text' defaultValue={product.price}/></td>
-                                                        
+                                                         */}
                                                     </>
                                                 )
                                             })
@@ -135,7 +164,7 @@ const Admin = () => {
                                     {errors.exampleRequired && <span>This field is required</span>}
 
                                     <br />
-                                    <Button type="submit" className='card-button' variant="info">Buy Now</Button>
+                                    <Button type="submit" className='card-button' variant="info">Add Watch</Button>
                                 </form>
                             </Tab.Pane>
                             <Tab.Pane eventKey="third">
