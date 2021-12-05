@@ -3,11 +3,12 @@ import {
   BrowserRouter as Router,
   Switch,
   Route,
-  Link
+  Link,
+
 } from "react-router-dom";
 import Home from './components/Home/Home';
 import Admin from './components/Admin/Admin';
-import { Navbar, Nav, NavDropdown, Form, FormControl, Button, Badge, Image, Col, Dropdown, } from 'react-bootstrap';
+import { Navbar, Nav, Badge, Dropdown } from 'react-bootstrap';
 import Orders from './components/Orders/Orders';
 import { createContext, useEffect, useState } from 'react';
 import Login from './components/Login/Login';
@@ -15,6 +16,8 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faSignOutAlt, faUserCircle } from '@fortawesome/free-solid-svg-icons'
 import PrivateRoute from './components/PrivateRoute/PrivateRoute';
 import CheckOut from './components/Checkout/Checkout';
+import Shipment from './components/Shipment/Shipment';
+import Profile from './components/Profile/Profile';
 
 export const productContext = createContext()
 
@@ -22,12 +25,16 @@ function App() {
   const [products, setProducts] = useState([]);
   const [cart, setCart] = useState([]);
   const [loggedInUser, setLoggedInUser] = useState({});
-  console.log(cart)
+  // console.log(cart)
   useEffect(() => {
-    fetch('http://localhost:5000/watches')
+    fetch('https://timeline-projects-server.herokuapp.com/watches')
       .then(response => response.json())
       .then(data => setProducts(data));
   }, [])
+  // console.log(products);
+
+
+
   const handleLogout = () => {
     setLoggedInUser({});
   }
@@ -47,17 +54,21 @@ function App() {
 
                 <Link className='nav-link mt-2' to="/checkout">Checkout <Badge variant="info">{cart.length}</Badge><span className="sr-only">unread messages</span></Link>
 
+                <Link className='nav-link mt-2' to="/orders" >Orders</Link>
+
                 <Link className='nav-link mt-2' to="/admin" >Admin</Link>
 
                 {
                   loggedInUser.email ? <Dropdown>
-                    <Dropdown.Toggle menuAlign={{ lg: 'left' }} variant="dark" id="dropdown-basic">
-                      <img className="profile-image" src={loggedInUser.userImage} alt="" srcset="" />
+                    <Dropdown.Toggle menualign={{ lg: 'left' }} variant="dark" id="dropdown-basic">
+                      <img className="profile-image" src={loggedInUser.userImage} alt="" srcSet="" />
 
                     </Dropdown.Toggle>
 
                     <Dropdown.Menu className='mr-4'>
-                      <Dropdown.Item ><FontAwesomeIcon icon={faUserCircle} /> My Profile</Dropdown.Item>
+                      <Dropdown.Item >
+                        <FontAwesomeIcon icon={faUserCircle} /> My Profile
+                      </Dropdown.Item>
                       <Dropdown.Item onClick={handleLogout}><FontAwesomeIcon icon={faSignOutAlt} /> Logout</Dropdown.Item>
                     </Dropdown.Menu>
                   </Dropdown> : <Link className='nav-link mt-2' to="/login">Login</Link>
@@ -67,17 +78,23 @@ function App() {
           </Navbar>
 
           <Switch>
-            <Route path="/checkout">
+            <PrivateRoute path="/checkout">
               <CheckOut />
-            </Route>
-            <Route path="/orders">
+            </PrivateRoute>
+            <PrivateRoute path="/shipment">
+              <Shipment />
+            </PrivateRoute>
+            <PrivateRoute path="/orders">
               <Orders />
-            </Route>
-            <Route path="/admin">
+            </PrivateRoute>
+            <PrivateRoute path="/admin">
               <Admin />
-            </Route>
+            </PrivateRoute>
             <Route path="/login">
               <Login />
+            </Route>
+            <Route path="/profile">
+              <Profile />
             </Route>
             <Route exact path="/">
               <Home />

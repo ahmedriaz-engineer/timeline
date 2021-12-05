@@ -2,14 +2,14 @@
 
 ## Live/Client Side
 
-https://
+https://timeline-projects.web.app/
 
 ## Server Side
 
-https://
+https://timeline-projects-server.herokuapp.com/
 
 ### Used Technology
 
-React, React-Router, Node.js, Express.js, MongoDB, Firebase, Bootstrap, Material UI, Heroku.
+React, React-Router, Node.js, Express.js, MongoDB, Firebase, React-Bootstrap, Material UI, Heroku.
 
 

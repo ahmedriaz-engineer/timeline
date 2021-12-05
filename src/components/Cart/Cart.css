@@ -1,0 +1,15 @@
+.cart-item{
+    color: white;
+    margin: 30px auto;
+    border-left: 2px solid grey;
+    justify-content: center;
+    align-items: center;
+    padding: 10px;
+}
+.cart-heading{
+    text-align: center;
+    color: white;
+}
+.cart-container{
+    width: 150%;
+}

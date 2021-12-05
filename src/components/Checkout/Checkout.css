@@ -16,3 +16,19 @@
     align-items: center;
     margin: 10px
 }
+#quantityHandler{
+    background-color: transparent;
+    color: white;
+    height: 35px;
+    border: 0;
+}
+.checkout-body{
+    background-image: url(../../background.jpg);
+    background-repeat: no-repeat;
+    background-size: cover;
+    color: white;
+}
+.c-container{
+    width: 60%;
+}
+

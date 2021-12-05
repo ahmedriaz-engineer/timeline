@@ -1,13 +1,18 @@
 
-.product-image{
+/* .product-image{
     background-color: lightgray ;
+    border:0;
+    margin: 0;
+    padding: 0;
 
-}
-.footer{
+} */
+/* .footer{
     display: flex;
     justify-content: space-between;
     align-items: center;
-}
+    
+} */
+
 .card-button{
     box-shadow: 0 10px 10px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19);
     
@@ -17,8 +22,10 @@
     transform: translateY(2px);
       
 }
-.product-container{
+/* .product-container{
     margin: 0 auto;
-    padding: 30px;
-    
+    padding: 30px;  
 }
+.product-card{
+    background-image: linear-gradient(to right,#09203F, #537895);        
+} */

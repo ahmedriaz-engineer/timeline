@@ -1,6 +1,7 @@
 import React from 'react';
-import { Button, Card, Row, Col, CardGroup } from 'react-bootstrap';
-import './Shop.css'
+import { Button } from 'react-bootstrap';
+
+import './Shop.css';
 
 const Shop = (props) => {
 
@@ -8,21 +9,21 @@ const Shop = (props) => {
 
 
     return (
-        <div className='product-container  App'>
-            <Card className='product-card ' style={{ width: '18rem' }}>
-                <Card.Img className='product-image img-fluid' variant="top" src={imageURL} />
-                <Card.Body>
-                    <Card.Title className='App'><h2>{name}</h2></Card.Title>
+        <div className='review-container'>
 
-                    <div className='footer'>
-                        <h5 className='mt-2'>${price}</h5>
-                        <Button onClick={()=>props.handleAddCheckout(props.product)}  className='card-button' variant="info" id='checkout-btn'>Add to Checkout</Button>
-                    </div>
+            <div>
+                <img src={imageURL} alt="ProductImage" className='review-image' />
+            </div>
+            <div>
+                <h4>{name}</h4><br />
+                <p><b>Net Price (BDT): {price}</b></p><br />
+                <Button onClick={() => props.handleAddToCart(props.product)} className='card-button' variant="info" id='checkout-btn'>Add to Cart</Button>
+            </div>
 
-                </Card.Body>
-            </Card>
-            
         </div>
+
+
+
     );
 };
 

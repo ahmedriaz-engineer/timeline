@@ -1,54 +1,77 @@
-import React from 'react';
-import { Button, Table, Image, Col } from 'react-bootstrap';
-import { useHistory } from 'react-router-dom';
+import { React, useEffect} from 'react';
+import { Button } from 'react-bootstrap';
 import { useContext } from 'react';
 import { productContext } from '../../App';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faMinus, faPlus } from '@fortawesome/free-solid-svg-icons'
-import './Checkout.css'
+import './Checkout.css';
+import { getDatabaseCart, removeFromDatabaseCart } from '../../utilities/databaseManager';
+import Review from '../Review/Review';
+import Cart from '../Cart/Cart';
+import { Link } from 'react-router-dom';
+
+
 
 
 const Checkout = () => {
     const [products, setProducts, loggedInUser, setLoggedInUser, cart, setCart] = useContext(productContext);
-    const history = useHistory();
-    const handleProceed = () => {
-        console.log('clicked');
-        history.push('/orders')
-    }
-    console.log(cart)
-        
     
-   
+
+    // let today = new Date();
+    // const date = `${today.getDate()}-${today.getMonth() + 1}-${today.getFullYear()}`
+    // const time = `${today.getHours()}:${today.getMinutes()}:${today.getSeconds()}`
+    // const dateTime = date + ' - ' + time;
+
+    
+
+    useEffect(() => {
+        fetch('https://timeline-projects-server.herokuapp.com/watches')
+            .then(response => response.json())
+            .then(data => {
+                cartFunction(data);
+
+            })
+
+    }, []);
+
+    const cartFunction = (products) => {
+        const savedCart = getDatabaseCart();
+        const productKeys = Object.keys(savedCart);
+        const cartProducts = productKeys.map(key => {
+            const product = products.find(product => product._id === key);
+            product.quantity = savedCart[key];
+
+            return product;
+        })
+        setCart(cartProducts);
+    }
+
+    const removeProduct = (productKey) => {
+        const newCart = cart.filter(product => product._id !== productKey);
+        setCart(newCart);
+        removeFromDatabaseCart(productKey);
+    }
+
 
     return (
-        <div className=''>
-            <h1> This is Checkout</h1>
-            <Button variant='info' onClick={handleProceed} >Proceed Order</Button>
-            <div className='c-container'>
-                {
-                    cart.map(checkout => {
-                        const { name, price, imageURL } = checkout;
-                        return (
-                            <div key={name} className='w-75 bg-info checkout'>
-                                <img src={imageURL} alt='images' width='150'></img>
-                                <h5>{name}</h5>
-                                <h5 id='netPrice'>{price}</h5>
-                                <div className='quantity'>
-                                    <FontAwesomeIcon onClick='' id='quantityMinus' icon={faMinus} />
-                                    <input defaultValue='1' type='number' className="form-control App" id="quantity-input" />
-                                    <FontAwesomeIcon id='quantityPlus' icon={faPlus} />
-                                </div>
-                                {
-                                    parseFloat(document.getElementById('quantity-input').value)*parseFloat(document.getElementById('netPrice').innerText)
-                                }
+        <div className='checkout-body '>
+            <div className='card-cart-container'>
+                <div className='c-container'>
+                    {
+                        cart.map(product => <Review key={product._id} removeProduct={removeProduct} product={product}></Review>)
+                    }
 
+                </div>
+                <div >
+                    <Cart>
+                        <Link to='/shipment'>
+                            <Button className='card-button' variant="success"  >Process Order</Button>
 
-                            </div>
-                        )
-                    })
-                }
+                        </Link>
+                    </Cart>
+                </div>
             </div>
+
         </div>
+
     );
 };
 

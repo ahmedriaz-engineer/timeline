@@ -27,7 +27,7 @@ const Admin = () => {
             imageURL: imageURL
         }
         console.log(watchData);
-        const url = 'http://localhost:5000/addWatch';
+        const url = 'https://timeline-projects-server.herokuapp.com/addWatch';
         fetch(url, {
             method: 'POST',
             headers: { "content-type": "application/json" },
@@ -51,29 +51,32 @@ const Admin = () => {
                 console.log(error);
             });
     }
-    function updateHandler() {
-        console.log('updating')
-    }
+
     const editHandler = (id) => {
         console.log("edit", id)
-        fetch(`http://localhost:5000/product/${id}`)
+        fetch(`https://timeline-projects-server.herokuapp.com/product/${id}`)
             .then(response => response.json())
             .then(data => {
                 console.log(data);
                 const update = document.getElementById('update');
                 update.innerHTML = `
-            <h3>Update: ${data._id}</h3>
-            <input class='addInput' placeholder='Enter Name' type= 'text' value='${data.name}'/>
-            <input class='addInput' placeholder='Enter Price' type= 'number' value='${data.price}'/>
-            <button onclick="updateHandler()" class='card-button btn btn-info'> Update </button><br /><br />
+                <div className='bg-light p-3 m-2'>
+                <h3>Update: ${data._id}</h3>
+                <input class='addInput' placeholder='Enter Name' type= 'text' value='${data.name}'/>
+                <input class='addInput' placeholder='Enter Price' type= 'number' value='${data.price}'/>
+                <Button class='card-button addInput btn-info'  onClick = "${() => updateProduct(data._id)}">Update</Button>
+                <div>
             `
+
             })
     }
 
-
+    function updateProduct(id) {
+        console.log('updating', id)
+    }
     const deleteHandler = (id) => {
 
-        fetch(`http://localhost:5000/delete/${id}`, {
+        fetch(`https://timeline-projects-server.herokuapp.com/delete/${id}`, {
             method: 'DELETE'
         })
             .then(response => response.json())
@@ -106,9 +109,11 @@ const Admin = () => {
                     <Col sm={9}>
                         <Tab.Content className='App'>
                             <Tab.Pane eventKey="first">
-                                <div id='update' className='bg-light p-3 m-2'>
+
+                                <div id='update' >
 
                                 </div>
+
                                 <Table striped bordered hover variant="dark" >
                                     <thead>
 
@@ -122,33 +127,30 @@ const Admin = () => {
                                     <tbody>
 
                                         {
-                                            products.map(product => {
-
+                                            products.map((product, index) => {
+                                                const productIndex = index + 1;
                                                 return (
-                                                    <>
-                                                        <tr key={product._id}>
-                                                            <td>1</td>
-                                                            <td>{product.name}</td>
-                                                            <td>{product.price}</td>
-                                                            <td>
-                                                                <Dropdown>
-                                                                    <Dropdown.Toggle variant="dark" id="dropdown-basic">
-                                                                        <FontAwesomeIcon icon={faEllipsisH} />
-                                                                    </Dropdown.Toggle>
 
-                                                                    <Dropdown.Menu>
-                                                                        <Dropdown.Item onClick={() => editHandler(`${product._id}`)}><FontAwesomeIcon icon={faEdit} /> Edit</Dropdown.Item>
-                                                                        <Dropdown.Item onClick={() => deleteHandler(`${product._id}`)}><FontAwesomeIcon icon={faTrashAlt} /> Delete</Dropdown.Item>
-                                                                    </Dropdown.Menu>
-                                                                </Dropdown>
-                                                            </td>
-                                                        </tr>
+                                                    <tr key={product._id}>
+                                                        <td>{productIndex}</td>
+                                                        <td>{product.name}</td>
+                                                        <td>{product.price}</td>
+                                                        <td>
+                                                            <Dropdown>
+                                                                <Dropdown.Toggle variant="dark" id="dropdown-basic">
+                                                                    <FontAwesomeIcon icon={faEllipsisH} />
+                                                                </Dropdown.Toggle>
 
-                                                        {/* <td>1</td>
-                                                            <td><input type= 'text' defaultValue={product.name}/></td>
-                                                            <td><input type= 'text' defaultValue={product.price}/></td>
-                                                         */}
-                                                    </>
+                                                                <Dropdown.Menu>
+                                                                    <Dropdown.Item onClick={() => editHandler(`${product._id}`)}><FontAwesomeIcon icon={faEdit} /> Edit</Dropdown.Item>
+                                                                    <Dropdown.Item onClick={() => deleteHandler(`${product._id}`)}><FontAwesomeIcon icon={faTrashAlt} /> Delete</Dropdown.Item>
+                                                                </Dropdown.Menu>
+                                                            </Dropdown>
+                                                        </td>
+                                                    </tr>
+
+
+
                                                 )
                                             })
                                         }
@@ -164,7 +166,7 @@ const Admin = () => {
                                     {errors.exampleRequired && <span>This field is required</span>}
 
                                     <br />
-                                    <Button type="submit" className='card-button' variant="info">Add Watch</Button>
+                                    <Button type="submit" className='card-button addInput' variant="info">Add Watch</Button>
                                 </form>
                             </Tab.Pane>
                             <Tab.Pane eventKey="third">
